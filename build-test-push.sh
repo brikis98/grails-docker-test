@@ -26,7 +26,7 @@ function copy_docker_config_file {
 
 function build_docker_image {
   echo "Building Docker image"
-  sudo docker build -t brikis98/grails-docker-test .
+  docker build -t brikis98/grails-docker-test .
 }
 
 function run_tests {
@@ -36,7 +36,7 @@ function run_tests {
 
 function push_docker_image {
   echo "Pushing Docker image to Docker Hub"
-  sudo docker push brikis98/grails-docker-test
+  docker push brikis98/grails-docker-test
   # TODO: tag with build SHA-1
 }
 
@@ -59,6 +59,7 @@ function parse_command {
         local readonly docker_config_file="$2"
         trap remove_docker_config_file EXIT INT TERM
         copy_docker_config_file "$docker_config_file"
+        ;;
       *)
         echo "Unrecognized argument: $key"
         exit 1
@@ -74,4 +75,4 @@ function parse_command {
 }
 
 
-build_test_push "$@"
+parse_command "$@"
