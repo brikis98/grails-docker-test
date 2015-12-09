@@ -84,7 +84,7 @@ function parse_command {
         local readonly docker_repo_auth="$2"
         local readonly docker_repo_email="$3"
         copy_docker_config_file "$docker_repo_url" "$docker_repo_auth" "$docker_repo_email"
-        shift
+        shift 3
         ;;
       --docker-command)
         docker_command="$2"
