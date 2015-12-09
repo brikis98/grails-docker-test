@@ -5,7 +5,7 @@
 
 set -e
 
-readonly DOCKER_CONFIG_FILE="~/.docker/config.json"
+readonly DOCKER_CONFIG_FILE=~/.docker/config.json
 readonly DEFAULT_DOCKER_COMMAND="docker"
 
 function remove_docker_config_file {
