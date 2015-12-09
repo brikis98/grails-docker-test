@@ -32,9 +32,8 @@ function create_docker_config_file {
       "email": "$DOCKER_REPO_EMAIL"
     }
   }
+}
 EOF
-
-  sudo cat "$DOCKER_CONFIG_FILE"
 }
 
 function run_build_test_push {
