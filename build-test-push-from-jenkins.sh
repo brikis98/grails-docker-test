@@ -19,12 +19,12 @@ function remove_docker_config_file {
 function create_docker_config_file {
   echo "Creating Docker config file $DOCKER_CONFIG_FILE"
   trap remove_docker_config_file EXIT INT TERM
-  mkdir -p "$DOCKER_CONFIG_FOLDER"
+  sudo mkdir -p "$DOCKER_CONFIG_FOLDER"
 
   # The DOCKER_REPO_XXX params are environment variables that ECS will set in the
   # Jenkins Docker container. They are configured in the Jenkins Terraform
   # templates.
-  cat << EOF > "$DOCKER_CONFIG_FILE"
+  sudo tee "$DOCKER_CONFIG_FILE" > /dev/null << EOF
 {
   "auths": {
     "$DOCKER_REPO_URL": {
