@@ -5,7 +5,8 @@
 
 set -e
 
-readonly DOCKER_CONFIG_FILE=~/.docker/config.json
+readonly DOCKER_CONFIG_FOLDER=~/.docker
+readonly DOCKER_CONFIG_FILE="$DOCKER_CONFIG_FOLDER/config.json"
 readonly DEFAULT_DOCKER_COMMAND="docker"
 
 function remove_docker_config_file {
@@ -22,6 +23,7 @@ function copy_docker_config_file {
   fi
 
   echo "Copying Docker config file $source_config_file to $DOCKER_CONFIG_FILE"
+  mkdir -p "$DOCKER_CONFIG_FOLDER"
   cp "$source_config_file" "$DOCKER_CONFIG_FILE"
 }
 
