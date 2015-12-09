@@ -62,16 +62,6 @@ function push_docker_image {
   eval "$docker_cmd push brikis98/grails-docker-test:$sha1"
 }
 
-function assert_valid_arg {
-  local readonly arg="$1"
-  local readonly arg_name="$2"
-
-  if [[ -z "$arg" || "${arg:0:1}" = "-" ]]; then
-    echo "ERROR: You must provide a value for argument $arg_name"
-    exit 1
-  fi
-}
-
 function parse_command {
   local docker_command="$DEFAULT_DOCKER_COMMAND"
 
