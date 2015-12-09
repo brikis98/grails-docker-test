@@ -44,10 +44,10 @@ function run_tests {
 
 function push_docker_image {
   local readonly docker_cmd="$1"
+  local readonly sha1=$(git rev-parse --short HEAD)
 
-  echo "Pushing Docker image to Docker Hub"
-  eval "$docker_cmd push brikis98/grails-docker-test"
-  # TODO: tag with build SHA-1
+  echo "Pushing Docker image to Docker Hub with tag $sha1"
+  eval "$docker_cmd push brikis98/grails-docker-test:$sha1"
 }
 
 function assert_valid_arg {
