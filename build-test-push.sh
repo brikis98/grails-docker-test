@@ -25,7 +25,7 @@ function copy_docker_config_file {
   trap remove_docker_config_file EXIT INT TERM
   echo "Copying Docker config file $source_config_file to $DOCKER_CONFIG_FILE"
   mkdir -p "$DOCKER_CONFIG_FOLDER"
-  cp $source_config_file $DOCKER_CONFIG_FILE
+  cp "$source_config_file" "$DOCKER_CONFIG_FILE"
 }
 
 function build_docker_image {
@@ -64,7 +64,7 @@ function parse_command {
   local docker_command="$DEFAULT_DOCKER_COMMAND"
 
   while [[ $# > 0 ]]; do
-    local readonly key="$1"
+    local key="$1"
 
     case $key in
       --docker-config-file)
