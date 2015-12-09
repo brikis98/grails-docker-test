@@ -22,6 +22,7 @@ function copy_docker_config_file {
     exit 1
   fi
 
+  trap remove_docker_config_file EXIT INT TERM
   echo "Copying Docker config file $source_config_file to $DOCKER_CONFIG_FILE"
   mkdir -p "$DOCKER_CONFIG_FOLDER"
   cat "$source_config_file" > "$DOCKER_CONFIG_FILE"
@@ -68,7 +69,6 @@ function parse_command {
     case $key in
       --docker-config-file)
         local readonly docker_config_file="$2"
-        trap remove_docker_config_file EXIT INT TERM
         copy_docker_config_file "$docker_config_file"
         ;;
       --docker-command)
