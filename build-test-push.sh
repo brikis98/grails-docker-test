@@ -66,13 +66,15 @@ function parse_command {
   while [[ $# > 0 ]]; do
     local key="$1"
 
-    case $key in
+    case "$key" in
       --docker-config-file)
         local readonly docker_config_file="$2"
         copy_docker_config_file "$docker_config_file"
+        shift
         ;;
       --docker-command)
         docker_command="$2"
+        shift
         ;;
       *)
         echo "Unrecognized argument: $key"
