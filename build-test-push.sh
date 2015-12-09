@@ -6,6 +6,7 @@
 set -e
 
 readonly DOCKER_CONFIG_FILE="~/.docker/config.json"
+readonly DEFAULT_DOCKER_COMMAND="docker"
 
 function remove_docker_config_file {
   echo "Removing Docker config file $DOCKER_CONFIG_FILE"
@@ -25,18 +26,24 @@ function copy_docker_config_file {
 }
 
 function build_docker_image {
+  local readonly docker_cmd="$1"
+
   echo "Building Docker image"
-  docker build -t brikis98/grails-docker-test .
+  eval "$docker_cmd build -t brikis98/grails-docker-test ."
 }
 
 function run_tests {
+  local readonly docker_cmd="$1"
+
   echo "Running tests"
   # TODO
 }
 
 function push_docker_image {
+  local readonly docker_cmd="$1"
+
   echo "Pushing Docker image to Docker Hub"
-  docker push brikis98/grails-docker-test
+  eval "$docker_cmd push brikis98/grails-docker-test"
   # TODO: tag with build SHA-1
 }
 
@@ -51,6 +58,8 @@ function assert_valid_arg {
 }
 
 function parse_command {
+  local docker_command="$DEFAULT_DOCKER_COMMAND"
+
   while [[ $# > 0 ]]; do
     local readonly key="$1"
 
@@ -59,6 +68,9 @@ function parse_command {
         local readonly docker_config_file="$2"
         trap remove_docker_config_file EXIT INT TERM
         copy_docker_config_file "$docker_config_file"
+        ;;
+      --docker-command)
+        docker_command="$2"
         ;;
       *)
         echo "Unrecognized argument: $key"
@@ -69,9 +81,9 @@ function parse_command {
     shift
   done
 
-  build_docker_image
-  run_tests
-  push_docker_image
+  build_docker_image "$docker_command"
+  run_tests "$docker_command"
+  push_docker_image "$docker_command"
 }
 
 
