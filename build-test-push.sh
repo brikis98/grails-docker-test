@@ -15,17 +15,27 @@ function remove_docker_config_file {
 }
 
 function copy_docker_config_file {
-  local readonly source_config_file="$1"
-
-  if [[ ! -f "$source_config_file" ]]; then
-    echo "ERROR: invalid --docker-config-file parameter specified: $source_config_file"
-    exit 1
+  if [ "$#" -ne 3 ]; then
+    echo "ERROR. You must pass exactly 3 arguments for a custom Docker config.json file: DOCKER_REPO_URL DOCKER_REPO_AUTH DOCKER_REPO_EMAIL."
   fi
 
+  local readonly docker_repo_url="$1"
+  local readonly docker_repo_auth="$2"
+  local readonly docker_repo_email="$3"
+
+  echo "Creating Docker config file $DOCKER_CONFIG_FILE"
   trap remove_docker_config_file EXIT INT TERM
-  echo "Copying Docker config file $source_config_file to $DOCKER_CONFIG_FILE"
   mkdir -p "$DOCKER_CONFIG_FOLDER"
-  cp "$source_config_file" "$DOCKER_CONFIG_FILE"
+
+  cat << EOF > "$DOCKER_CONFIG_FILE"
+{
+  "auths": {
+    "$docker_repo_url": {
+      "auth": "$docker_repo_auth",
+      "email": "$docker_repo_email"
+    }
+  }
+EOF
 }
 
 function build_docker_image {
@@ -70,8 +80,10 @@ function parse_command {
 
     case "$key" in
       --docker-config-file)
-        local readonly docker_config_file="$2"
-        # copy_docker_config_file "$docker_config_file"
+        local readonly docker_repo_url="$1"
+        local readonly docker_repo_auth="$2"
+        local readonly docker_repo_email="$3"
+        copy_docker_config_file "$docker_repo_url" "$docker_repo_auth" "$docker_repo_email"
         shift
         ;;
       --docker-command)
