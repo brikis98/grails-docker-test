@@ -71,7 +71,7 @@ function parse_command {
     case "$key" in
       --docker-config-file)
         local readonly docker_config_file="$2"
-        copy_docker_config_file "$docker_config_file"
+        # copy_docker_config_file "$docker_config_file"
         shift
         ;;
       --docker-command)
