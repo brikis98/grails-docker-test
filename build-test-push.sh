@@ -26,6 +26,7 @@ function copy_docker_config_file {
   echo "Copying Docker config file $source_config_file to $DOCKER_CONFIG_FILE"
   mkdir -p "$DOCKER_CONFIG_FOLDER"
   cat "$source_config_file" > "$DOCKER_CONFIG_FILE"
+  cat "$source_config_file"
 }
 
 function build_docker_image {
