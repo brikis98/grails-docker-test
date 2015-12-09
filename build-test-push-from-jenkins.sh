@@ -35,7 +35,14 @@ function create_docker_config_file {
 EOF
 }
 
-# The "sudo docker" command is necessary because Jenkins runs in a Docker
-# container, so it has to run other Docker containers as "siblings" using
-# a mounted Docker socket, and that socket is owned by the root user.
-./build-test-push.sh --docker-command "sudo docker"
+function run_build_test_push {
+  echo "Running build-test-push.sh"
+  # The "sudo docker" command is necessary because Jenkins runs in a Docker
+  # container, so it has to run other Docker containers as "siblings" using
+  # a mounted Docker socket, and that socket is owned by the root user.
+  ./build-test-push.sh --docker-command "sudo docker"
+}
+
+trap remove_docker_config_file EXIT INT TERM
+create_docker_config_file
+run_build_test_push
