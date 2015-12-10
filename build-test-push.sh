@@ -21,7 +21,7 @@ function run_tests {
   local readonly sha1="$2"
 
   echo "Running tests"
-  eval "$docker_cmd run --rm $DOCKER_IMAGE_NAME:$sha1 grails test-app"
+  eval "$docker_cmd run --rm $DOCKER_IMAGE_NAME:$sha1 'grails test-app'"
 }
 
 function push_docker_image {
