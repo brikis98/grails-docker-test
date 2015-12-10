@@ -8,4 +8,4 @@
 
 set -e
 
-bash -l -c "grails prod $@ run-war"
+bash -l -c "grails prod $@ run-war -restart"
