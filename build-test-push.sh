@@ -6,13 +6,14 @@
 set -e
 
 readonly DEFAULT_DOCKER_COMMAND="docker"
+readonly DOCKER_IMAGE_NAME="brikis98/grails-docker-test"
 
 function build_docker_image {
   local readonly docker_cmd="$1"
   local readonly sha1="$2"
 
   echo "Building Docker image"
-  eval "$docker_cmd build -t brikis98/grails-docker-test:$sha1 ."
+  eval "$docker_cmd build -t $DOCKER_IMAGE_NAME:$sha1 ."
 }
 
 function run_tests {
@@ -20,7 +21,7 @@ function run_tests {
   local readonly sha1="$2"
 
   echo "Running tests"
-  # TODO
+  eval "$docker_cmd run --rm $DOCKER_IMAGE_NAME:$sha1 grails test-app"
 }
 
 function push_docker_image {
@@ -28,7 +29,7 @@ function push_docker_image {
   local readonly sha1="$2"
 
   echo "Pushing Docker image to Docker Hub with tag $sha1"
-  eval "$docker_cmd push brikis98/grails-docker-test:$sha1"
+  eval "$docker_cmd push $DOCKER_IMAGE_NAME:$sha1"
 }
 
 function parse_command {
